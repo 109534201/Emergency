@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+</head>
+<body>
+  <script>
+    // Firebase 配置
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.getAuth(app);
+
+    function googleSignIn() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(auth, provider)
+        .then((result) => {
+          const user = result.user;
+          const data = `name=${encodeURIComponent(user.displayName)}&email=${encodeURIComponent(user.email)}`;
+          window.location.href = `myapp://callback?${data}`;
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
+    }
+  </script>
+  <button onclick="googleSignIn()">Sign in with Google</button>
+</body>
+</html>
